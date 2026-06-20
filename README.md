@@ -1,6 +1,8 @@
 # This is a pure Pascal version of Lepton written in RUST by Microsoft
 # which was based on Dropbox's Lepton written in C++
 
+Based on version 0.5.3.
+
 It can loslessly compress JPEGs into 50-80% of their size
 
 # CLI Usage - leptoncli.lpr
