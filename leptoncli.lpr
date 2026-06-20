@@ -17,7 +17,7 @@ procedure Usage;
 begin
   Writeln('Lepton JPEG <-> LEPTON coder/decoder');
   Writeln;
-  Writeln('Uzycie:');
+  Writeln('Usage:');
   Writeln('  leptoncli c  <in.jpg> <out.lep>  - compress JPEG -> LEPTON (+ round-trip verification)');
   Writeln('  leptoncli cf <in.jpg> <out.lep>  - compress with no verification (faster)');
   Writeln('  leptoncli d  <in.lep> <out.jpg>  - decompresss LEPTON -> JPEG');
