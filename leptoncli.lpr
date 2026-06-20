@@ -1,0 +1,110 @@
+program leptoncli;
+
+// LEPTON - JPEG encoder/decoder
+// Based on Microsoft's code in Ruby
+// Author: www.xelitan.com/
+// License: MIT
+//
+
+{$mode delphi}
+{$H+}
+
+uses
+  SysUtils, Classes,
+  LeptonErrors, LeptonFeatures, LeptonFile;
+
+procedure Usage;
+begin
+  Writeln('Lepton JPEG <-> LEPTON coder/decoder');
+  Writeln;
+  Writeln('Uzycie:');
+  Writeln('  leptoncli c  <in.jpg> <out.lep>  - compress JPEG -> LEPTON (+ round-trip verification)');
+  Writeln('  leptoncli cf <in.jpg> <out.lep>  - compress with no verification (faster)');
+  Writeln('  leptoncli d  <in.lep> <out.jpg>  - decompresss LEPTON -> JPEG');
+end;
+
+procedure RunEncode(const InName, OutName: string; Verify: Boolean);
+var
+  InS, OutS: TFileStream;
+  Features: TEnabledFeatures;
+  T0: TDateTime;
+begin
+  Features := TEnabledFeatures.CompatLeptonVectorWrite;
+  InS := TFileStream.Create(InName, fmOpenRead or fmShareDenyWrite);
+  try
+    OutS := TFileStream.Create(OutName, fmCreate);
+    try
+      T0 := Now;
+      if Verify then
+        EncodeLeptonVerify(InS, OutS, Features)
+      else
+        EncodeLepton(InS, OutS, Features);
+      Writeln(Format('OK: %s (%d B) -> %s (%d B)  [%.0f%% of size, %d ms]',
+        [InName, InS.Size, OutName, OutS.Size,
+         100.0 * OutS.Size / InS.Size, Round((Now - T0) * 86400000)]));
+    finally
+      OutS.Free;
+    end;
+  finally
+    InS.Free;
+  end;
+end;
+
+procedure RunDecode(const InName, OutName: string);
+var
+  InS, OutS: TFileStream;
+  Features: TEnabledFeatures;
+  T0: TDateTime;
+begin
+  Features := TEnabledFeatures.CompatLeptonVectorRead;
+  InS := TFileStream.Create(InName, fmOpenRead or fmShareDenyWrite);
+  try
+    OutS := TFileStream.Create(OutName, fmCreate);
+    try
+      T0 := Now;
+      DecodeLepton(InS, OutS, Features);
+      Writeln(Format('OK: %s (%d B) -> %s (%d B)  [%d ms]',
+        [InName, InS.Size, OutName, OutS.Size, Round((Now - T0) * 86400000)]));
+    finally
+      OutS.Free;
+    end;
+  finally
+    InS.Free;
+  end;
+end;
+
+var
+  Mode: string;
+begin
+  if ParamCount < 3 then
+  begin
+    Usage;
+    Halt(1);
+  end;
+
+  try
+    Mode := LowerCase(ParamStr(1));
+    if (Mode = 'c') or (Mode = 'e') or (Mode = 'encode') or (Mode = 'compress') then
+      RunEncode(ParamStr(2), ParamStr(3), True)
+    else if (Mode = 'cf') or (Mode = 'compress-fast') then
+      RunEncode(ParamStr(2), ParamStr(3), False)
+    else if (Mode = 'd') or (Mode = 'decode') or (Mode = 'decompress') then
+      RunDecode(ParamStr(2), ParamStr(3))
+    else
+    begin
+      Usage;
+      Halt(1);
+    end;
+  except
+    on E: ELeptonError do
+    begin
+      Writeln(ErrOutput, Format('Lepton ERROR (code %d): %s', [Ord(E.Code), E.Message]));
+      Halt(2);
+    end;
+    on E: Exception do
+    begin
+      Writeln(ErrOutput, Format('ERROR (%s): %s', [E.ClassName, E.Message]));
+      Halt(2);
+    end;
+  end;
+end.
