@@ -9,7 +9,7 @@ unit LeptonNeighbor;
 // LEPTON - JPEG encoder/decoder
 // Based on Microsoft's code in Ruby
 // Author: www.xelitan.com/
-// License: MIT
+// License: Apache 2.0
 //
 // Port of `structs/neighbor_summary.rs` and the NeighborData part of
 //  `structs/block_context.rs`.  The SIMD i16x8 / i32x8 lanes from the Rust

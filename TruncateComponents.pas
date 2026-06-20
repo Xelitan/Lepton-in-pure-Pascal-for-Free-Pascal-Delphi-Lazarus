@@ -1,7 +1,7 @@
 // LEPTON - JPEG encoder/decoder
 // Based on Microsoft's code in Ruby
 // Author: www.xelitan.com/
-// License: MIT
+// License: Apache 2.0
 //
 //  Port of `jpeg/truncate_components.rs` to Free Pascal.
 // 

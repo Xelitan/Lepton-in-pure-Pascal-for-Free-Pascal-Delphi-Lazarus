@@ -9,7 +9,7 @@ unit LeptonFile;
 // LEPTON - JPEG encoder/decoder
 // Based on Microsoft's code in Ruby
 // Author: www.xelitan.com/
-// License: MIT
+// License: Apache 2.0
 //
 // Port of `structs/lepton_header.rs`, `structs/lepton_file_writer.rs`,
 //  `structs/lepton_file_reader.rs` and the framing part of

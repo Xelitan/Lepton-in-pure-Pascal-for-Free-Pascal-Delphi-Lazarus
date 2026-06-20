@@ -9,7 +9,7 @@ unit LeptonModel;
 // LEPTON - JPEG encoder/decoder
 // Based on Microsoft's code in Ruby
 // Author: www.xelitan.com/
-// License: MIT
+// License: Apache 2.0
 //
 // Port of `structs/model.rs`. The probability model holds a large set of
 //  arithmetic-coding branches. Because every field is a TLeptonBranch (a Word
